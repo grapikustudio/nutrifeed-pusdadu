@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/x-icon" href="/img/nutrifeed-logo.png">
+    <title><?= $title; ?> | Pusat Data Terpadu NUTRIFEED</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+    <link rel="stylesheet" href="/plugins/fontawesome-free/css/all.min.css">
+    <!-- dropzonejs -->
+    <link rel="stylesheet" href="/plugins/dropzone/min/dropzone.min.css">
+    <link rel="stylesheet" href="/css/adminlte.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/rowreorder/1.2.8/css/rowReorder.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.3.0/css/responsive.dataTables.min.css">
+
+    <style>
+        #example1_filter {
+            float: right;
+        }
+
+        .category,
+        .link {
+            max-width: 571px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .link:hover {
+            overflow: visible;
+            background-color: #ffffff;
+            position: absolute;
+            max-width: 100%;
+            height: auto;
+        }
+
+        td:nth-child(5) {
+            width: 20%;
+        }
+        .gap {
+  height: 100px;
+}
+    </style>
+</head>
+
+<body class="hold-transition sidebar-collapse layout-top-nav">
+    <div class="wrapper">
+
+        <!-- Navbar -->
+        <nav class="main-header navbar navbar-expand-md navbar-light navbar-white">
+            <div class="container">
+                <a href="/dasbor" class="navbar-brand">
+                    <img src="/img/logo-nutrifeed.png" class="brand-image " style="opacity: .8">
+                    <span class="brand-text font-weight-light">Pusat Data Terpadu NUTRIFEED</span>
+                </a>
+
+                <button class="navbar-toggler order-1" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse order-3" id="navbarCollapse">
+                    <!-- Left navbar links -->
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a href="/dasbor" class="nav-link">Dasbor</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/link" class="nav-link">Beranda</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/dasbor/link" class="nav-link">Daftar Link</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/dasbor/file" class="nav-link">File Manager</a>
+                        </li>
+                        <?php if (session()->get('role') == 1) { ?>
+                            <li class="nav-item dropdown dropdown-hover">
+                                <a id="dropdownSubMenu2" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link dropdown-toggle">Manajemen User</a>
+                                <ul aria-labelledby="dropdownSubMenu2" class="dropdown-menu border-0 shadow">
+                                    <li><a href="/dasbor/user" class="dropdown-item"><i class="fa fa-chevron-right nav-icon"></i> Daftar User</a></li>
+                                    <li><a href="/dasbor/user/tambah" class="dropdown-item"><i class="fa fa-chevron-right nav-icon"></i> Tambah User</a></li>
+                                </ul>
+                            </li>
+                        <?php } ?>
+                    </ul>
+                </div>
+
+                <!-- Right navbar links -->
+                <ul class="order-1 order-md-3 navbar-nav navbar-no-expand ml-auto">
+                    <!-- Notifications Dropdown Menu -->
+                    <li class="nav-item">
+                        <a class="nav-link" href="/logout">
+                            <i class="fas fa-sign-out-alt"></i> Logout
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+        <!-- /.navbar -->
+
+        <?= $this->renderSection('content'); ?>
+
+        <div class="modal fade" id="modal-default">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Konfirmasi Hapus Data</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Apakah anda yakin hapus data ini?</p>
+                    </div>
+                    <div class="modal-footer justify-content-between">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Batalkan</button>
+                        <a href="javascript:;" class="btn btn-primary" id="modalDelete">Hapus Data</a>
+                    </div>
+                </div>
+                <!-- /.modal-content -->
+            </div>
+            <!-- /.modal-dialog -->
+        </div>
+        <div class="modal fade" id="modal-add-folder">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Tambah Folder</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <form action="/addDriveFolder" method="post">
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <label for="folder">Masukkan Nama Folder</label>
+                                <input type="hidden" name="id" id="id">
+                                <input type="text" class="form-control" name="folder" id="folder" placeholder="Nama Folder">
+                            </div>
+                        </div>
+                        <div class="modal-footer justify-content-between">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Batalkan</button>
+                            <button type="submit" class="btn btn-primary">Tambah</a>
+                        </div>
+                    </form>
+                </div>
+                <!-- /.modal-content -->
+            </div>
+            <!-- /.modal-dialog -->
+        </div>
+        <div class="modal fade" id="modal-rename">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Ubah Nama</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <form action="/updateDrive" method="post">
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <label for="folder">Masukkan Nama Baru</label>
+                                <input type="hidden" name="id" id="id">
+                                <input type="text" class="form-control" name="folder" id="folder" placeholder="Nama File / Folder">
+                                <small>Perhatikan Ekstensi File Jangan Di Ubah</small>
+                            </div>
+                        </div>
+                        <div class="modal-footer justify-content-between">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Batalkan</button>
+                            <button type="submit" class="btn btn-primary">Tambah</a>
+                        </div>
+                    </form>
+                </div>
+                <!-- /.modal-content -->
+            </div>
+            <!-- /.modal-dialog -->
+        </div>
+        <!-- Main Footer -->
+        <footer class="main-footer">
+            <!-- To the right -->
+            <div class="float-right d-none d-sm-block">
+                Developed with &#9829; <a href="https://grapiku.com">Grapiku Studio.</a>
+            </div>
+            <!-- Default to the left -->
+            <strong>Copyright &copy; 2022 </strong><a href="https://pakanternaknutrifeed.com">KJUB Puspetasari</a>
+        </footer>
+    </div>
+    <!-- ./wrapper -->
+
+    <!-- REQUIRED SCRIPTS -->
+
+    <!-- jQuery -->
+    <script src="/plugins/jquery/jquery.min.js"></script>
+    <!-- Bootstrap 4 -->
+    <script src="/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <!-- Grapiku App -->
+    <script src="/js/adminlte.min.js"></script>
+    <script src="/js/hapus.js"></script>
+    <script src="/plugins/datatables/jquery.dataTables.min.js"></script>
+    <script src="/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+    <script src="/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+    <script src="/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+    <script src="/plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
+    <script src="/plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
+    <script src="/plugins/datatables-buttons/js/buttons.html5.min.js"></script>
+    <script src="/plugins/bs-custom-file-input/bs-custom-file-input.min.js"></script>
+    <script src="/plugins/datatables-buttons/js/buttons.print.min.js"></script>
+    <script src="/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
+    <script src="/plugins/datatables-rowreorder/js/dataTables.rowReorder.min.js"></script>
+    <script src="/plugins/datatables-rowreorder/js/rowReorder.bootstrap4.min.js"></script>
+    <!-- dropzonejs -->
+    <script src="/plugins/dropzone/min/dropzone.min.js"></script>
+    <script>
+        $("#example1").DataTable({
+            rowReorder: {
+                selector: 'td:nth-child(2)'
+            },
+            "responsive": true,
+            "lengthChange": false,
+            "autoWidth": false,
+        });
+        // $(document).ready(function() {
+        //     var table = $('#example1').DataTable({
+        //         rowReorder: {
+        //             selector: 'td:nth-child(2)'
+        //         },
+        //         responsive: true
+        //     });
+        // });
+        $(function() {
+            bsCustomFileInput.init();
+        });
+    </script>
+</body>
+
+</html>
