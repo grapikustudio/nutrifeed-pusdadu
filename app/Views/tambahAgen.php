@@ -26,36 +26,34 @@
                 <div class="col">
                     <div class="card card-primary">
                         <!-- form start -->
-                        <form action="/doAddUser" method="post">
+                        <form action="/doAddAgen" method="post">
                             <div class="card-body">
                                 <div class="form-group">
                                     <label for="email">Email</label>
-                                    <input type="email" class="form-control" id="email" name="email" required placeholder="Masukkan Alamat Email Anda">
+                                    <input type="email" class="form-control" id="email" name="email" required placeholder="Masukkan Alamat Email Agen">
                                 </div>
                                 <div class="form-group">
-                                    <label for="name">Nama Pengguna</label>
-                                    <input type="text" class="form-control" id="name" name="name" required placeholder="Masukkan Nama Anda">
+                                    <label for="name">Nama Agen</label>
+                                    <input type="text" class="form-control" id="name" name="name" required placeholder="Masukkan Nama Agen">
                                 </div>
                                 <div class="form-group">
-                                    <label for="KategoriUser">Kategori User</label>
-                                    <select name="catUser" class="form-control" id="KategoriUser" required>
-                                        <option selected="true" disabled="disabled">Pilih Kategori User</option>
-                                        <option value="1">Administrator</option>
-                                        <option value="2">Direksi</option>
-                                        <option value="3">Marketing</option>
-                                        <option value="4">Agen</option>
-                                        <option value="5">PIC Agen</option>
-                                    </select>
+                                    <label for="nameOwner">Nama Pemilik</label>
+                                    <input type="text" class="form-control" id="nameOwner" name="nameOwner" required placeholder="Masukkan Nama Pemilik">
+                                </div>
+                                <div class="form-group">
+                                    <label for="alamat">Alamat</label>
+                                    <input type="text" class="form-control" id="alamat" name="alamat" required placeholder="Masukkan Alamat">
                                 </div>
                                 <div class="form-group">
                                     <label for="pass">Password</label>
                                     <input type="password" class="form-control" id="pass" name="pass" required placeholder="Masukkan Password">
                                 </div>
+                                <input type="hidden" name="referal" id="referal" value="<?= session()->get('name'); ?>">
                             </div>
                             <!-- /.card-body -->
                             <div class="card-footer">
-                                <a href="/dasbor/user" class="btn btn-default"><i class="fa fa-arrow-left"></i> Kembali ke Daftar User</a>
-                                <button type="submit" style="float:right" class="btn btn-primary">Tambah User</button>
+                                <a href="/dasbor/agen" class="btn btn-default"><i class="fa fa-arrow-left"></i> Kembali ke Daftar Agen</a>
+                                <button type="submit" style="float:right" class="btn btn-primary">Tambah Agen</button>
                             </div>
                         </form>
                     </div>

@@ -10,7 +10,9 @@ class Auth extends BaseController
     public function __construct()
     {
         $this->authModel = new AuthModel();
+        $this->logging = new Log();
         $this->session = session();
+        $this->logType = 'otorisasi';
     }
     public function login()
     {
@@ -21,6 +23,8 @@ class Auth extends BaseController
     }
     public function logout()
     {
+        $logMsg = 'User ' . session()->get('name') . ' Melakukan Logout';
+        $this->logging->doLog($this->logType, $logMsg);
         $this->session->destroy();
         return redirect()->to('/');
     }
@@ -67,11 +71,15 @@ class Auth extends BaseController
                         'name' => $user['name'],
                         'role' => $user['role']
                     ];
+                    $logMsg = 'User ' . $user['name'] . ' Login Berhasil';
+                    $this->logging->doLog($this->logType, $logMsg);
                     $this->session->set($sessLogin);
                     if ($this->session->get('role') == 4) {
                         return redirect()->to('/link');
+                    } elseif ($this->session->get('role') == 5) {
+                        return redirect()->to('/dasbor/agen');
                     } else {
-                        return redirect()->to('/welcome');
+                        return redirect()->to('/dasbor');
                     }
                 }
             }

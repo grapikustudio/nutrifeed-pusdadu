@@ -34,7 +34,7 @@
                     <?php if (session()->get('role') != 4 and session()->get('role') != 3) {
                         if (isset($perusahaan['link'])) {
                             echo '
-                            <a href="/link/redir?url=' . $perusahaan['link'] . '" target="_blank" class="btn-link ps-3">
+                            <a href="/link/redir?url=' . $perusahaan['link'] . '&cat=perusahaan" target="_blank" class="btn-link ps-3">
                                 <div class="link">
                                     <div class="row">
                                         <div class="col-sm-2">
@@ -53,7 +53,7 @@
                     <?php if (session()->get('role') != 4) {
                         if (isset($template['link'])) {
                             echo '
-                        <a href="/link/redir?url=' . $template['link'] . '" target="_blank" class="btn-link ps-3">
+                        <a href="/link/redir?url=' . $template['link'] . '&cat=template" target="_blank" class="btn-link ps-3">
                         <div class="link">
                             <div class="row">
                                 <div class="col-sm-2">
@@ -72,7 +72,7 @@
                     <?php if (session()->get('role') != 4) {
                         if (isset($desain['link'])) {
                             echo '
-                        <a href="/link/redir?url=' . $desain['link'] . '" target="_blank" class="btn-link ps-3">
+                        <a href="/link/redir?url=' . $desain['link'] . '&cat=desain" target="_blank" class="btn-link ps-3">
                         <div class="link">
                             <div class="row">
                                 <div class="col-sm-2">
@@ -91,7 +91,7 @@
                     <?php if (session()->get('role') != 4) {
                         if (isset($foto['link'])) {
                             echo '
-                        <a href="/link/redir?url=' . $foto['link'] . '" target="_blank" class="btn-link ps-3">
+                        <a href="/link/redir?url=' . $foto['link'] . '&cat=foto" target="_blank" class="btn-link ps-3">
                         <div class="link">
                             <div class="row">
                                 <div class="col-sm-2">
@@ -110,7 +110,7 @@
                     <?php if (session()->get('role') != 4) {
                         if (isset($video['link'])) {
                             echo '
-                            <a href="/link/redir?url=' . $video['link'] . '" target="_blank" class="btn-link ps-3">
+                            <a href="/link/redir?url=' . $video['link'] . '&cat=video" target="_blank" class="btn-link ps-3">
                             <div class="link">
     
                                 <div class="row">
@@ -129,7 +129,7 @@
                         }
                     } ?>
                     <?php if (isset($agen['link'])) { ?>
-                        <a href="/link/redir?url=<?= $agen['link']; ?>" target="_blank" class="btn-link ps-3">
+                        <a href="/link/redir?url=<?= $agen['link']; ?>&cat=agen" target="_blank" class="btn-link ps-3">
                             <div class="link">
                                 <div class="row">
                                     <div class="col-sm-2">

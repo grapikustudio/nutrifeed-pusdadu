@@ -39,9 +39,10 @@
         td:nth-child(5) {
             width: 20%;
         }
+
         .gap {
-  height: 100px;
-}
+            height: 100px;
+        }
     </style>
 </head>
 
@@ -63,27 +64,33 @@
                 <div class="collapse navbar-collapse order-3" id="navbarCollapse">
                     <!-- Left navbar links -->
                     <ul class="navbar-nav">
-                        <li class="nav-item">
-                            <a href="/dasbor" class="nav-link">Dasbor</a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="/link" class="nav-link">Beranda</a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="/dasbor/link" class="nav-link">Daftar Link</a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="/dasbor/file" class="nav-link">File Manager</a>
-                        </li>
-                        <?php if (session()->get('role') == 1) { ?>
-                            <li class="nav-item dropdown dropdown-hover">
-                                <a id="dropdownSubMenu2" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link dropdown-toggle">Manajemen User</a>
-                                <ul aria-labelledby="dropdownSubMenu2" class="dropdown-menu border-0 shadow">
-                                    <li><a href="/dasbor/user" class="dropdown-item"><i class="fa fa-chevron-right nav-icon"></i> Daftar User</a></li>
-                                    <li><a href="/dasbor/user/tambah" class="dropdown-item"><i class="fa fa-chevron-right nav-icon"></i> Tambah User</a></li>
-                                </ul>
+                        <?php if (session()->get('role') != 5) { ?>
+                            <li class="nav-item">
+                                <a href="/dasbor" class="nav-link">Dasbor</a>
                             </li>
-                        <?php } ?>
+                            <li class="nav-item">
+                                <a href="/dasbor/log" class="nav-link">Log</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="/dasbor/file" class="nav-link">File Manager</a>
+                            </li>
+                            <?php if (session()->get('role') == 1) { ?>
+                                <li class="nav-item dropdown dropdown-hover">
+                                    <a id="dropdownSubMenu2" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link dropdown-toggle">Manajemen User</a>
+                                    <ul aria-labelledby="dropdownSubMenu2" class="dropdown-menu border-0 shadow">
+                                        <li><a href="/dasbor/user" class="dropdown-item"><i class="fa fa-chevron-right nav-icon"></i> Daftar User</a></li>
+                                        <li><a href="/dasbor/user/tambah" class="dropdown-item"><i class="fa fa-chevron-right nav-icon"></i> Tambah User</a></li>
+                                    </ul>
+                                </li>
+                        <?php }
+                        } ?>
+                        <li class="nav-item dropdown dropdown-hover">
+                            <a id="dropdownSubMenu2" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link dropdown-toggle">Manajemen Agen</a>
+                            <ul aria-labelledby="dropdownSubMenu2" class="dropdown-menu border-0 shadow">
+                                <li><a href="/dasbor/agen" class="dropdown-item"><i class="fa fa-chevron-right nav-icon"></i> Daftar Agen</a></li>
+                                <li><a href="/dasbor/agen/tambah" class="dropdown-item"><i class="fa fa-chevron-right nav-icon"></i> Tambah Agen</a></li>
+                            </ul>
+                        </li>
                     </ul>
                 </div>
 
@@ -215,6 +222,14 @@
     <script src="/plugins/dropzone/min/dropzone.min.js"></script>
     <script>
         $("#example1").DataTable({
+            rowReorder: {
+                selector: 'td:nth-child(2)'
+            },
+            "responsive": true,
+            "lengthChange": false,
+            "autoWidth": false,
+        });
+        $("#example2").DataTable({
             rowReorder: {
                 selector: 'td:nth-child(2)'
             },

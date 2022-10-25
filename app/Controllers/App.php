@@ -6,6 +6,9 @@ use App\Controllers\BaseController;
 use App\Models\AuthModel;
 use App\Models\AppModel;
 use App\Models\FileModel;
+use App\Models\AgenModel;
+use App\Controllers\Log;
+use App\Models\LogModel;
 use \Geeklabs\Breadcrumbs\Breadcrumb;
 use Google\Client;
 use Google\Service\Drive;
@@ -21,6 +24,10 @@ class App extends BaseController
         $this->authModel = new AuthModel();
         $this->appModel = new AppModel();
         $this->fileModel = new FileModel();
+        $this->agenModel = new AgenModel();
+        $this->logModel = new LogModel();
+        $this->log = new Log();
+        $this->logType = 'event';
     }
     public function link()
     {
@@ -37,6 +44,8 @@ class App extends BaseController
     public function linkRedirect()
     {
         $data = $this->request->getVar();
+        $logMsg = 'User ' . session()->get('name') . ' Membuka Link Data ' . $data['cat'];
+        $this->log->doLog($this->logType, $logMsg);
         $this->appModel->setClick($data['url']);
         header("Location: " . $data['url']);
         exit;
@@ -53,12 +62,14 @@ class App extends BaseController
         $jumlahLink = count($this->appModel->findAll());
         $jumlahKlik = $this->appModel->getClick();
         $jumlahUser = count($this->authModel->findAll());
+        $jumlahAgen = count($this->authModel->where('role', 4)->findAll());
         $data = [
             'breadcrumb' => $this->breadcrumb->buildAuto(),
             'title' => 'Dasbor',
             'link' => $jumlahLink,
             'klik' => $jumlahKlik,
-            'user' => $jumlahUser
+            'user' => $jumlahUser,
+            'agen' => $jumlahAgen
         ];
         return view('dasbor', $data);
     }
@@ -74,14 +85,28 @@ class App extends BaseController
     public function deleteLink($id)
     {
         $this->appModel->delete($id);
+        $logMsg = 'User ' . session()->get('name') . ' Menghapus Data Link';
+        $this->log->doLog($this->logType, $logMsg);
         session()->setFlashdata('success_link', 'Data Berhasil Dihapus');
         return redirect()->to('/dasbor/link');
     }
     public function deleteUser($id)
     {
         $this->authModel->delete($id);
+        $logMsg = 'User ' . session()->get('name') . ' Menghapus Data User';
+        $this->log->doLog($this->logType, $logMsg);
         session()->setFlashdata('success_user', 'Data Berhasil Dihapus');
         return redirect()->to('/dasbor/user');
+    }
+    public function deleteAgen()
+    {
+        $data = $this->request->getVar();
+        $this->authModel->delete($data['uid']);
+        $this->agenModel->delete($data['id']);
+        $logMsg = 'User ' . session()->get('name') . ' Menghapus Data Agen';
+        $this->log->doLog($this->logType, $logMsg);
+        session()->setFlashdata('success_user', 'Data Berhasil Dihapus');
+        return redirect()->back();
     }
     public function updateLink($id)
     {
@@ -116,17 +141,42 @@ class App extends BaseController
     public function listFile()
     {
         if (session()->get('role') == 3) {
-            $file = $this->fileModel->getFileExcept();
+            $folder = "name != 'Data Perusahaan'";
         } else {
-            $file = $this->fileModel->findAll();
+            $folder = "mimeType = 'application/vnd.google-apps.folder'";
         }
-
-        $data = [
-            'breadcrumb' => $this->breadcrumb->buildAuto(),
-            'title' => 'Daftar File',
-            'file' => $file
-        ];
-        return view('listFile', $data);
+        $qFolder = $this->request->getVar('folder');
+        if ($qFolder) {
+            $qDrive = "parents='$qFolder'";
+        } else {
+            $qDrive = $folder . "and parents='1CXYDZC65wUSlrE5wGr87tOu4vm6-2Kwi'";
+        }
+        try {
+            $client = new Client();
+            $client->setAuthConfig(WRITEPATH . '/secrets/drivenutrifeed-dcc00319371b.json');
+            $client->addScope(Drive::DRIVE);
+            $driveService = new Drive($client);
+            $files = array();
+            $pageToken = null;
+            do {
+                $response = $driveService->files->listFiles(array(
+                    'q' => $qDrive,
+                    'spaces' => 'drive',
+                    'supportsAllDrives' => true,
+                    'fields' => '*'
+                ));
+                $data = [
+                    'title' => "File Manager",
+                    'breadcrumb' => $this->breadcrumb->buildAuto(),
+                    'file' => $response->files,
+                ];
+                return view('fileManager', $data);
+                $pageToken = $response->pageToken;
+            } while ($pageToken != null);
+        } catch (\Exception $e) {
+            session()->setFlashdata('successUpload', "An error occurred: " . $e->getMessage());
+            return view('fileManager');
+        }
     }
     public function addLink()
     {
@@ -144,6 +194,58 @@ class App extends BaseController
         ];
         return view('tambahUser', $data);
     }
+    public function addAgen()
+    {
+        $data = [
+            'breadcrumb' => $this->breadcrumb->buildAuto(),
+            'title' => 'Tambah Agen'
+        ];
+        return view('tambahAgen', $data);
+    }
+    public function doAddAgen()
+    {
+        $data = $this->request->getVar();
+        $salt = uniqid('', true);
+        $password = md5($data['pass']) . $salt;
+        $this->agenModel->insertData($data['email'], $data['name'], $salt, $data['nameOwner'], $data['alamat'], $password, $data['referal']);
+        $logMsg = 'User ' . session()->get('name') . ' Menambah Data Agen';
+        $this->log->doLog($this->logType, $logMsg);
+        session()->setFlashdata('success_user', 'Data Berhasil Ditambahkan');
+        return redirect()->to('/dasbor/agen');
+    }
+    public function updateAgen($id)
+    {
+        $query = $this->agenModel->getQuery($id);
+        $data = [
+            'breadcrumb' => $this->breadcrumb->buildAuto(),
+            'title' => 'Ubah Data Agen',
+            'data' => $query
+        ];
+        return view('updateAgen', $data);
+    }
+    public function doUpdateAgen()
+    {
+        $data = $this->request->getVar();
+        $salt = uniqid('', true);
+        $password = md5($data['pass']) . $salt;
+        $this->authModel->update($data['uid'], [
+            'pass' => $password,
+            'salt' => $salt
+        ]);
+        $logMsg = 'User ' . session()->get('name') . ' Mengubah Data Agen';
+        $this->log->doLog($this->logType, $logMsg);
+        session()->setFlashdata('success_user', 'User Berhasil Diubah');
+        return redirect()->to('/dasbor/agen');
+    }
+    public function listAgen()
+    {
+        $data = [
+            'breadcrumb' => $this->breadcrumb->buildAuto(),
+            'title' => 'Daftar Agen',
+            'users' => $this->agenModel->getData()
+        ];
+        return view('listAgen', $data);
+    }
     public function doAddUser()
     {
         $data = $this->request->getVar();
@@ -157,6 +259,8 @@ class App extends BaseController
             'salt' => $salt,
             'role' => $data['catUser']
         ]);
+        $logMsg = 'User ' . session()->get('name') . ' Menambah Data User';
+        $this->log->doLog($this->logType, $logMsg);
         session()->setFlashdata('success_user', 'User Berhasil Ditambahkan');
         return redirect()->to('/dasbor/user');
     }
@@ -169,6 +273,8 @@ class App extends BaseController
             'pass' => $password,
             'salt' => $salt
         ]);
+        $logMsg = 'User ' . session()->get('name') . ' Mengubah Data User';
+        $this->log->doLog($this->logType, $logMsg);
         session()->setFlashdata('success_user', 'User Berhasil Diubah');
         return redirect()->to('/dasbor/user');
     }
@@ -198,6 +304,8 @@ class App extends BaseController
             $file = $driveService->files->create($fileMetadata, array(
                 'fields' => 'id'
             ));
+            $logMsg = 'User ' . session()->get('name') . ' Membuat Folder';
+            $this->log->doLog($this->logType, $logMsg);
             session()->setFlashdata('successUpload', 'Folder Berhasil Dibuat');
             return redirect()->back();
         } catch (\Exception $e) {
@@ -218,6 +326,8 @@ class App extends BaseController
             $this->fileModel->update($data['id'], [
                 'name' => $data['name']
             ]);
+            $logMsg = 'User ' . session()->get('name') . ' Mengubah File/Folder';
+            $this->log->doLog($this->logType, $logMsg);
             session()->setFlashdata('successUpload', 'File Berhasil di Ubah');
             return redirect()->to('/dasbor/file');
         } catch (\Exception $e) {
@@ -236,6 +346,8 @@ class App extends BaseController
             $file = new Drive\DriveFile();
             $file->setName($data['folder']);
             $driveService->files->update($data['id'], $file);
+            $logMsg = 'User ' . session()->get('name') . ' Mengubah File/Folder';
+            $this->log->doLog($this->logType, $logMsg);
             session()->setFlashdata('successUpload', 'File Berhasil di Ubah');
             return redirect()->back();
         } catch (\Exception $e) {
@@ -253,7 +365,6 @@ class App extends BaseController
             $file = $this->appModel->findAll();
         }
         if ($folder) {
-
             try {
                 $client = new Client();
                 $client->setAuthConfig(WRITEPATH . '/secrets/drivenutrifeed-dcc00319371b.json');
@@ -319,6 +430,8 @@ class App extends BaseController
                 'category' => $data['catLink'],
                 'click' => 0
             ]);
+            $logMsg = 'User ' . session()->get('name') . ' Menambah Link';
+            $this->log->doLog($this->logType, $logMsg);
             session()->setFlashdata('success_link', 'Data Link Berhasil Ditambahkan');
             return redirect()->to('/dasbor/link');
         }
@@ -329,6 +442,8 @@ class App extends BaseController
         $this->appModel->update($data['id'], [
             'link' => $data['link']
         ]);
+        $logMsg = 'User ' . session()->get('name') . ' Mengubah Link';
+        $this->log->doLog($this->logType, $logMsg);
         session()->setFlashdata('success_link', 'Data Berhasil Diubah');
         return redirect()->to('/dasbor/link');
     }
@@ -340,12 +455,16 @@ class App extends BaseController
             $this->authModel->update($id, [
                 'status' => 1
             ]);
+            $logMsg = 'User ' . session()->get('name') . ' Mengubah Status User';
+            $this->log->doLog($this->logType, $logMsg);
         } else {
             $this->authModel->update($id, [
                 'status' => 0
             ]);
+            $logMsg = 'User ' . session()->get('name') . ' Mengubah Status User';
+            $this->log->doLog($this->logType, $logMsg);
         }
-        return redirect()->to('/dasbor/user');
+        return redirect()->back();
     }
     public function upload()
     {
@@ -381,7 +500,7 @@ class App extends BaseController
                         )
                     );
                     $fileContent = file_get_contents($f);
-                    
+
                     $fileMetadata->setParents([$folder['id']]);
                     $file = $driveService->files->create($fileMetadata, array(
                         'data' => $fileContent,
@@ -391,6 +510,8 @@ class App extends BaseController
                     ));
                 }
             }
+            $logMsg = 'User ' . session()->get('name') . ' Upload File';
+            $this->log->doLog($this->logType, $logMsg);
             session()->setFlashdata('successUpload', 'File Berhasil di Upload');
             return redirect()->to(previous_url());
         } catch (\Exception $e) {
@@ -409,6 +530,8 @@ class App extends BaseController
             $driveService = new Drive($client);
             $driveService->files->delete($id);
             $this->fileModel->deleteFile($id);
+            $logMsg = 'User ' . session()->get('name') . ' Menghapus File';
+            $this->log->doLog($this->logType, $logMsg);
             session()->setFlashdata('successUpload', 'File Berhasil Di Hapus');
             return redirect()->back();
         } catch (\Exception $e) {
@@ -416,5 +539,15 @@ class App extends BaseController
             session()->setFlashdata('successUpload', "An error occurred: " . $err->error->message);
             return redirect()->back();
         }
+    }
+    public function log()
+    {
+        $data = [
+            'breadcrumb' => $this->breadcrumb->buildAuto(),
+            'title' => 'Log Aktivitas',
+            'auth' => $this->logModel->where('category', 'otorisasi')->findAll(),
+            'event' => $this->logModel->where('category', 'event')->findAll()
+        ];
+        return view('log', $data);
     }
 }

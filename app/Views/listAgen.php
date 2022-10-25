@@ -27,10 +27,10 @@
                     <div class="card">
                         <div class="card-header">
                             <div>
-                                <h3 class="card-title mt-2">Daftar user yang telah ditambahkan</h3>
+                                <h3 class="card-title mt-2">Daftar Agen yang Telah Registrasi</h3>
                             </div>
                             <div style="float: right;">
-                                <a href="/dasbor/user/tambah" class="btn btn-primary">Tambah User</a>
+                                <a href="/dasbor/agen/tambah" class="btn btn-primary">Tambah Agen</a>
                             </div>
                         </div>
                         <!-- /.card-header -->
@@ -45,47 +45,33 @@
                                     <tr>
                                         <th>No</th>
                                         <th>Email</th>
-                                        <th>Nama</th>
-                                        <th>Keterangan</th>
+                                        <th>Nama Agen</th>
+                                        <th>Referer</th>
                                         <th>Status</th>
                                         <th>Aksi</th>
                                     </tr>
+
                                 </thead>
                                 <tbody>
                                     <?php $i = 1;
                                     foreach ($users as $u) {
-                                        switch ($u['role']) {
-                                            case '1':
-                                                $role = "Administrator";
-                                                break;
-                                            case '2':
-                                                $role = "Direksi";
-                                                break;
-                                            case '3':
-                                                $role = "Marketing";
-                                                break;
-                                            case '4':
-                                                $role = "Agen";
-                                                break;
-                                            case '5':
-                                                $role = "PIC Agen";
-                                                break;
-                                        }
+
                                         if (!$u['status']) {
-                                            $status = '  <a href="/dasbor/user/enable/' . $u['id'] . '" class="btn btn-danger">Denied</a>';
+                                            $status = '  <a href="/dasbor/user/enable/' . $u['id_user'] . '" class="btn btn-danger">Denied</a>';
                                         } else {
-                                            $status = '  <a href="/dasbor/user/disable/' . $u['id'] . '" class="btn btn-success">Allowed</a>';
+                                            $status = '  <a href="/dasbor/user/disable/' . $u['id_user'] . '" class="btn btn-success">Allowed</a>';
                                         }
                                     ?>
                                         <tr>
                                             <td><?= $i++; ?></td>
                                             <td><?= $u['email']; ?> </td>
                                             <td><?= $u['name']; ?></td>
-                                            <td><?= $role; ?> </td>
+                                            <td><?= $u['referer']; ?> </td>
                                             <td><?= $status; ?></td>
+
                                             <td>
-                                                <a href="javascript:;" class="btn btn-danger" data-toggle="modal" data-target="#modal-default" data-button-type="user" data-id="<?= $u['id']; ?>"><i class="fas fa-trash"></i> Hapus</a>
-                                                <a href="/dasbor/user/update/<?= $u['id']; ?>" class="btn btn-warning"><i class="fas fa-pen"></i> Update</a>
+                                                <a href="javascript:;" class="btn btn-danger" data-toggle="modal" data-target="#modal-default" data-button-type="agen" data-id="<?= $u['id']; ?>" data-id-user="<?= $u['id_user']; ?>"><i class="fas fa-trash"></i> Hapus</a>
+                                                <a href="/dasbor/agen/update/<?= $u['id']; ?>" class="btn btn-warning"><i class="fas fa-pen"></i> Update</a>
                                             </td>
                                         </tr>
                                     <?php } ?>

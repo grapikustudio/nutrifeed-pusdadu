@@ -24,20 +24,34 @@ class Filters extends BaseConfig
         'invalidchars'   => InvalidChars::class,
         'secureheaders'  => SecureHeaders::class,
         'authGuard'     => \App\Filters\AuthGuard::class,
+        'pic' => \App\Filters\PicFilter::class,
         'exceptAgen'    => [
             \App\Filters\AuthGuard::class,
-            \App\Filters\AgenFilter::class
+            \App\Filters\AgenFilter::class,
+            \App\Filters\PicFilter::class
+        ],
+        'exceptPIC'    => [
+            \App\Filters\AuthGuard::class,
+            \App\Filters\AgenFilter::class,
         ],
         'exceptMarketing' => [
             \App\Filters\AuthGuard::class,
             \App\Filters\MarketingFilter::class,
+            \App\Filters\AgenFilter::class,
+            \App\Filters\PicFilter::class
+        ],
+        'adminPicOnly' => [
+            \App\Filters\AuthGuard::class,
+            \App\Filters\MarketingFilter::class,
+            \App\Filters\DireksiFilter::class,
             \App\Filters\AgenFilter::class
         ],
         'adminOnly' => [
             \App\Filters\AuthGuard::class,
             \App\Filters\MarketingFilter::class,
             \App\Filters\DireksiFilter::class,
-            \App\Filters\AgenFilter::class
+            \App\Filters\AgenFilter::class,
+            \App\Filters\PicFilter::class
         ]
     ];
 
