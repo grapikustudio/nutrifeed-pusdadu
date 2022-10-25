@@ -169,6 +169,7 @@ class App extends BaseController
                     'title' => "File Manager",
                     'breadcrumb' => $this->breadcrumb->buildAuto(),
                     'file' => $response->files,
+                    'folder' => $qFolder
                 ];
                 return view('fileManager', $data);
                 $pageToken = $response->pageToken;

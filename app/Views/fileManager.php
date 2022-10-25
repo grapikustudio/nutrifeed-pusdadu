@@ -27,6 +27,9 @@
                                 <h3 class="card-title mt-2">Lokasi : <a href="/dasbor/file">File</a> /</h3>
                             </div>
                             <div style="float: right;">
+                                <?php if ($folder) { ?>
+                                    <a href="javascript:;" class="btn btn-primary" data-toggle="modal" data-target="#modal-upload" data-id="<?= $folder; ?>">Upload File</a>
+                                <?php } ?>
                                 <a href="javascript:;" class="btn btn-default" data-toggle="modal" data-target="#modal-add-folder" data-id="1CXYDZC65wUSlrE5wGr87tOu4vm6-2Kwi">Tambah Folder</a>
                             </div>
                         </div>
