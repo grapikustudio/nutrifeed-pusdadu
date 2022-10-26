@@ -68,6 +68,35 @@
           </div>
           <div class="row">
             <div class="col">
+              <div class="card card-primary card-outline">
+                <div class="card-header">
+                  <h5>Data Folder Sentral NUTRIFEED</h5>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <?php foreach ($folder as $f) { ?>
+              <div class="col-12 col-lg-6">
+                <a href="<?= $f['link']; ?>" class="link-data">
+                  <div class="card">
+                    <div class="card-body">
+                      <div class="d-inline-block">
+                        <img class="icon-link" src="/img/link.svg">
+                        <div class="d-inline-block col-9">
+                          <h5><?= $f['folder']; ?></h5>
+                          <hr>
+                          <p><?= $f['desc']; ?></p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </a>
+              </div>
+            <?php } ?>
+          </div>
+          <div class="row">
+            <div class="col">
               <iframe style="width: inherit;" height="700" src="https://datastudio.google.com/embed/reporting/0e29b03b-e92a-479b-b247-4df28b2b0e74/page/tWDGB" frameborder="0" style="border:0" allowfullscreen></iframe>
               <div class="gap"></div>
             </div>

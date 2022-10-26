@@ -10,7 +10,7 @@
                     <h1 class="m-0"><?= $title; ?></h1>
                 </div><!-- /.col -->
                 <div class="col-sm-6">
-                    <a href="<?= previous_url(); ?>" class="float-sm-right btn"><i class="fa fa-chevron-left"> </i> Kembali Folder Sebelumnya</a>
+                    <a href="#" onClick="history.back();" class="float-sm-right btn"><i class="fa fa-chevron-left"> </i> Kembali Folder Sebelumnya</a>
                 </div><!-- /.col -->
             </div><!-- /.row -->
         </div><!-- /.container-fluid -->
@@ -29,8 +29,12 @@
                             <div style="float: right;">
                                 <?php if ($folder) { ?>
                                     <a href="javascript:;" class="btn btn-primary" data-toggle="modal" data-target="#modal-upload" data-id="<?= $folder; ?>">Upload File</a>
-                                <?php } ?>
-                                <a href="javascript:;" class="btn btn-default" data-toggle="modal" data-target="#modal-add-folder" data-id="1CXYDZC65wUSlrE5wGr87tOu4vm6-2Kwi">Tambah Folder</a>
+                                <?php $dataId = $folder;
+                                } else {
+                                    $dataId = '1CXYDZC65wUSlrE5wGr87tOu4vm6-2Kwi';
+                                } ?>
+
+                                <a href="javascript:;" class="btn btn-default" data-toggle="modal" data-target="#modal-add-folder" data-id="<?= $dataId; ?>">Tambah Folder</a>
                             </div>
                         </div>
                         <!-- /.card-header -->
@@ -82,6 +86,15 @@
                     </div>
                 </div>
             </div>
+            <div class="row">
+                <div class="col">
+                    <div class="callout callout-warning">
+                        <h5>Pro-Tips</h5>
+
+                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ratione neque nobis dicta illum mollitia quasi quisquam iure accusantium vero non amet asperiores nostrum, maxime, odio aliquam aperiam impedit, sunt consequatur!</p>
+                    </div>
+                </div>
+            </div>
             <!-- /.row -->
         </div><!-- /.container-fluid -->
     </div>
@@ -103,7 +116,6 @@
                         <label for="fileUpload">Pilih File</label>
                         <div class="input-group">
                             <div class="custom-file">
-
                                 <input type="file" class="custom-file-input" id="fileUpload" name="file[]" multiple>
                                 <label class="custom-file-label" for="fileUpload">Klik Untuk Pilih File ...</label>
                             </div>

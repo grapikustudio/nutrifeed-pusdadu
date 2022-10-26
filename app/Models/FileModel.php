@@ -13,8 +13,8 @@ class FileModel extends Model
 
     public function deleteFile($id)
     {
-        $builder = $this->table('link');
-        $builder->where('id_file', $id);
+        $builder = $this->table('folder');
+        $builder->where('id_folder', $id);
         $builder->delete();
         return $builder;
     }

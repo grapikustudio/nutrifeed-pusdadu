@@ -8,6 +8,7 @@ use App\Models\AppModel;
 use App\Models\FileModel;
 use App\Models\AgenModel;
 use App\Controllers\Log;
+use App\Models\FolderModel;
 use App\Models\LogModel;
 use \Geeklabs\Breadcrumbs\Breadcrumb;
 use Google\Client;
@@ -28,6 +29,7 @@ class App extends BaseController
         $this->logModel = new LogModel();
         $this->log = new Log();
         $this->logType = 'event';
+        $this->folderModel = new FolderModel();
     }
     public function link()
     {
@@ -63,13 +65,15 @@ class App extends BaseController
         $jumlahKlik = $this->appModel->getClick();
         $jumlahUser = count($this->authModel->findAll());
         $jumlahAgen = count($this->authModel->where('role', 4)->findAll());
+        $folder = $this->folderModel->findAll();
         $data = [
             'breadcrumb' => $this->breadcrumb->buildAuto(),
             'title' => 'Dasbor',
             'link' => $jumlahLink,
             'klik' => $jumlahKlik,
             'user' => $jumlahUser,
-            'agen' => $jumlahAgen
+            'agen' => $jumlahAgen,
+            'folder' => $folder
         ];
         return view('dasbor', $data);
     }
@@ -303,8 +307,16 @@ class App extends BaseController
             ));
             $fileMetadata->setParents([$data['id']]);
             $file = $driveService->files->create($fileMetadata, array(
-                'fields' => 'id'
+                'fields' => '*'
             ));
+            if ($data['desc']) {
+                $this->folderModel->save([
+                    'id_folder' => $file->id,
+                    'link' => $file->webViewLink,
+                    'folder' => $file->name,
+                    'desc' => $data['desc']
+                ]);
+            }
             $logMsg = 'User ' . session()->get('name') . ' Membuat Folder';
             $this->log->doLog($this->logType, $logMsg);
             session()->setFlashdata('successUpload', 'Folder Berhasil Dibuat');
@@ -347,6 +359,24 @@ class App extends BaseController
             $file = new Drive\DriveFile();
             $file->setName($data['folder']);
             $driveService->files->update($data['id'], $file);
+            if ($data['desc']) {
+                $list = $driveService->files->get($data['id'], [
+                    'fields' => '*'
+                ]);
+                if (!$this->folderModel->where('id', $data['id'])->first()) {
+                    $this->folderModel->save([
+                        'id_folder' => $list->id,
+                        'link' => $list->webViewLink,
+                        'folder' => $list->name,
+                        'desc' => $data['desc']
+                    ]);
+                } else {
+                    $this->folderModel->update($data['id'], [
+                        'folder' => $list->name,
+                        'desc' => $data['desc']
+                    ]);
+                }
+            }
             $logMsg = 'User ' . session()->get('name') . ' Mengubah File/Folder';
             $this->log->doLog($this->logType, $logMsg);
             session()->setFlashdata('successUpload', 'File Berhasil di Ubah');
@@ -530,7 +560,7 @@ class App extends BaseController
             $client->addScope(Drive::DRIVE);
             $driveService = new Drive($client);
             $driveService->files->delete($id);
-            $this->fileModel->deleteFile($id);
+            $this->folderModel->where('id_folder', $id)->delete();
             $logMsg = 'User ' . session()->get('name') . ' Menghapus File';
             $this->log->doLog($this->logType, $logMsg);
             session()->setFlashdata('successUpload', 'File Berhasil Di Hapus');

@@ -43,6 +43,28 @@
         .gap {
             height: 100px;
         }
+
+        .icon-link {
+            height: 80px;
+            vertical-align: top;
+        }
+
+        .link-data {
+            color: #ffffff;
+        }
+
+        .link-data:hover {
+            color: #303030;
+        }
+
+        .link-data .card {
+            background: linear-gradient(111deg, rgba(3, 153, 53, 1) 0%, rgba(63, 169, 127, 1) 90%);
+        }
+
+        .link-data .card:hover {
+            color: #ffffff;
+            background: linear-gradient(111deg, rgb(10, 194, 72) 0%, rgb(72, 189, 142) 90%);
+        }
     </style>
 </head>
 
@@ -146,6 +168,12 @@
                                 <input type="hidden" name="id" id="id">
                                 <input type="text" class="form-control" name="folder" id="folder" placeholder="Nama Folder">
                             </div>
+                            <?php if (!isset($_GET['folder'])) { ?>
+                                <div class="form-group">
+                                    <label for="desc">Masukkan Deskripsi</label>
+                                    <input type="textarea" name="desc" id="desc" class="form-control" placeholder="Deskripsi Folder">
+                                </div>
+                            <?php } ?>
                         </div>
                         <div class="modal-footer justify-content-between">
                             <button type="button" class="btn btn-default" data-dismiss="modal">Batalkan</button>
@@ -161,7 +189,41 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h4 class="modal-title">Ubah Nama</h4>
+                        <h4 class="modal-title">Ubah Data</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <form action="/updateDrive" method="post">
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <label for="folder">Masukkan Nama Baru</label>
+                                <input type="hidden" name="id" id="id">
+                                <input type="text" class="form-control" name="folder" id="folder" placeholder="Nama File / Folder">
+                                <small>Perhatikan Ekstensi File Jangan Di Ubah</small>
+                            </div>
+                            <?php if (!isset($_GET['folder'])) { ?>
+                                <div class="form-group">
+                                    <label for="desc">Masukkan Deskripsi</label>
+                                    <input type="textarea" name="desc" id="desc" class="form-control" placeholder="Deskripsi Folder">
+                                </div>
+                            <?php } ?>
+                        </div>
+                        <div class="modal-footer justify-content-between">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Batalkan</button>
+                            <button type="submit" class="btn btn-primary">Update</a>
+                        </div>
+                    </form>
+                </div>
+                <!-- /.modal-content -->
+            </div>
+            <!-- /.modal-dialog -->
+        </div>
+        <!-- <div class="modal fade" id="modal-rename">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Ubah Data</h4>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -175,16 +237,15 @@
                                 <small>Perhatikan Ekstensi File Jangan Di Ubah</small>
                             </div>
                         </div>
+                        
                         <div class="modal-footer justify-content-between">
                             <button type="button" class="btn btn-default" data-dismiss="modal">Batalkan</button>
                             <button type="submit" class="btn btn-primary">Tambah</a>
                         </div>
                     </form>
                 </div>
-                <!-- /.modal-content -->
             </div>
-            <!-- /.modal-dialog -->
-        </div>
+        </div> -->
         <!-- Main Footer -->
         <footer class="main-footer">
             <!-- To the right -->
