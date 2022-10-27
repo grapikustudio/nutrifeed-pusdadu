@@ -65,7 +65,11 @@ class App extends BaseController
         $jumlahKlik = $this->appModel->getClick();
         $jumlahUser = count($this->authModel->findAll());
         $jumlahAgen = count($this->authModel->where('role', 4)->findAll());
-        $folder = $this->folderModel->findAll();
+        if (session()->get('role') == 1 or session()->get('role') == 2) {
+            $folder = $this->folderModel->findAll();
+        } else {
+            $folder = $this->folderModel->where('folder !=', 'Data Perusahaan')->findAll();
+        }
         $data = [
             'breadcrumb' => $this->breadcrumb->buildAuto(),
             'title' => 'Dasbor',
