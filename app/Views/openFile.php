@@ -81,6 +81,17 @@
                     </div>
                 </div>
             </div>
+            <div class="row">
+                <div class="col">
+                    <div class="callout callout-warning">
+                        <h5>File Manager</h5>
+
+                        <p>Untuk menambahkan atau mengunggah file, anda dapat mengklik tombol “UPLOAD FILE”. Di halaman ini anda juga dapat menambahkan folder dengan mengklik tombol “TAMBAH FOLDER”.
+                            Apabila anda ingin memasukkan file ke dalam folder yang telah dibuat, terlebih dahulu klik nama folder dan unggah file di dalamnya.
+                        </p>
+                    </div>
+                </div>
+            </div>
             <!-- /.row -->
         </div><!-- /.container-fluid -->
     </div>

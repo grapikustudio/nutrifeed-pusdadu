@@ -52,6 +52,7 @@ $routes->get('/dasbor/user/tambah', "App::addUser", ['filter' => 'adminOnly']);
 $routes->get('/dasbor/user/delete/(:num)', "App::deleteUser/$1", ['filter' => 'adminOnly']);
 $routes->get('/dasbor/link', "App::listLink", ['filter' => 'exceptAgen']);
 $routes->get('/dasbor/file', "App::listFile", ['filter' => 'exceptAgen']);
+$routes->get('/dasbor/faq', "App::faq", ['filter' => 'exceptAgen']);
 //$routes->get('/dasbor/file', "App::getFile", ['filter' => 'exceptAgen']);
 $routes->get('/dasbor/file/upload', "App::upload", ['filter' => 'exceptAgen']);
 $routes->get('/dasbor/file/delete/(:any)', "App::deleteFile/$1", ['filter' => 'exceptAgen']);

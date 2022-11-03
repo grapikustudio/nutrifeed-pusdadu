@@ -113,6 +113,9 @@
                                 <li><a href="/dasbor/agen/tambah" class="dropdown-item"><i class="fa fa-chevron-right nav-icon"></i> Tambah Agen</a></li>
                             </ul>
                         </li>
+                        <li class="nav-item">
+                            <a href="/dasbor/faq" class="nav-link">FAQ</a>
+                        </li>
                     </ul>
                 </div>
 

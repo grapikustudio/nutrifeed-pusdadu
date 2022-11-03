@@ -82,6 +82,15 @@
                     </div>
                 </div>
             </div>
+            <div class="row">
+                <div class="col">
+                    <div class="callout callout-warning">
+                        <h5>Daftar Agen</h5>
+
+                        <p>Untuk menambahkan agen, silakan klik tombol “TAMBAH AGEN”. Penambahan agen hanya boleh dilakukan oleh PIC Agen.</p>
+                    </div>
+                </div>
+            </div>
             <!-- /.row -->
         </div><!-- /.container-fluid -->
     </div>

@@ -89,9 +89,10 @@
             <div class="row">
                 <div class="col">
                     <div class="callout callout-warning">
-                        <h5>Pro-Tips</h5>
-
-                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ratione neque nobis dicta illum mollitia quasi quisquam iure accusantium vero non amet asperiores nostrum, maxime, odio aliquam aperiam impedit, sunt consequatur!</p>
+                        <h5>File Manager</h5>
+                        <p>Ini adalah tampilan file manager (pengelolaan seluruh file data Nutrifeed).
+                            Untuk masuk ke dalam folder, klik Nama folder yang berwarna biru dan ditandai dengan ikon folder. Untuk melihat folder melalui google drive, anda dapat mengklik tulisan “TAMPILKAN”.
+                        </p>
                     </div>
                 </div>
             </div>

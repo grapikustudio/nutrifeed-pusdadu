@@ -255,6 +255,14 @@ class App extends BaseController
         ];
         return view('listAgen', $data);
     }
+    public function faq()
+    {
+        $data = [
+            'breadcrumb' => $this->breadcrumb->buildAuto(),
+            'title' => 'FAQ'
+        ];
+        return view('faq', $data);
+    }
     public function doAddUser()
     {
         $data = $this->request->getVar();
@@ -367,15 +375,12 @@ class App extends BaseController
                 $list = $driveService->files->get($data['id'], [
                     'fields' => '*'
                 ]);
-                if (!$this->folderModel->where('id', $data['id'])->first()) {
+                if ($this->folderModel->where('id_folder', $data['id'])->first()) {
+                    $this->folderModel->updateFolder($data['id'], $list->name, $data['desc']);
+                } else {
                     $this->folderModel->save([
                         'id_folder' => $list->id,
                         'link' => $list->webViewLink,
-                        'folder' => $list->name,
-                        'desc' => $data['desc']
-                    ]);
-                } else {
-                    $this->folderModel->update($data['id'], [
                         'folder' => $list->name,
                         'desc' => $data['desc']
                     ]);

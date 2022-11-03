@@ -16,4 +16,9 @@ class FolderModel extends Model
         $builder = $this->table('folder')->where('folder !=', 'Data Perusahaan')->get()->getResultArray();
         return $builder;
     }
+    public function updateFolder($id, $folder, $desc)
+    {
+        $builder = $this->table('folder')->set('folder', $folder)->set('desc', $desc)->where('id_folder', $id)->update();
+        return $builder;
+    }
 }
