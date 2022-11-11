@@ -263,6 +263,25 @@ class App extends BaseController
         ];
         return view('faq', $data);
     }
+    public function ubahPass()
+    {
+        $data = [
+            'breadcrumb' => $this->breadcrumb->buildAuto(),
+            'title' => 'Ganti Password',
+        ];
+        return view('ubahPassword', $data);
+    }
+    public function doChgPass()
+    {
+        $data = $this->request->getVar();
+        $salt = uniqid('', true);
+        $this->authModel->update($data['id'], [
+            'salt' => $salt,
+            'pass' => md5($data['pass']) . $salt
+        ]);
+        session()->setFlashdata('success_chg', 'Password Berhasil Diubah');
+        return redirect()->to('/dasbor/user/ubah');
+    }
     public function doAddUser()
     {
         $data = $this->request->getVar();

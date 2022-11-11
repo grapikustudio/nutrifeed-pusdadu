@@ -96,26 +96,27 @@
                             <li class="nav-item">
                                 <a href="/dasbor/file" class="nav-link">File Manager</a>
                             </li>
-                            <?php if (session()->get('role') == 1) { ?>
-                                <li class="nav-item dropdown dropdown-hover">
-                                    <a id="dropdownSubMenu2" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link dropdown-toggle">Manajemen User</a>
-                                    <ul aria-labelledby="dropdownSubMenu2" class="dropdown-menu border-0 shadow">
+                            <li class="nav-item dropdown dropdown-hover">
+                                <a id="dropdownSubMenu2" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link dropdown-toggle">Manajemen User</a>
+                                <ul aria-labelledby="dropdownSubMenu2" class="dropdown-menu border-0 shadow">
+                                    <?php if (session()->get('role') == 1) { ?>
                                         <li><a href="/dasbor/user" class="dropdown-item"><i class="fa fa-chevron-right nav-icon"></i> Daftar User</a></li>
                                         <li><a href="/dasbor/user/tambah" class="dropdown-item"><i class="fa fa-chevron-right nav-icon"></i> Tambah User</a></li>
-                                    </ul>
-                                </li>
-                        <?php }
-                        } ?>
-                        <li class="nav-item dropdown dropdown-hover">
-                            <a id="dropdownSubMenu2" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link dropdown-toggle">Manajemen Agen</a>
-                            <ul aria-labelledby="dropdownSubMenu2" class="dropdown-menu border-0 shadow">
-                                <li><a href="/dasbor/agen" class="dropdown-item"><i class="fa fa-chevron-right nav-icon"></i> Daftar Agen</a></li>
-                                <li><a href="/dasbor/agen/tambah" class="dropdown-item"><i class="fa fa-chevron-right nav-icon"></i> Tambah Agen</a></li>
-                            </ul>
-                        </li>
-                        <li class="nav-item">
-                            <a href="/dasbor/faq" class="nav-link">FAQ</a>
-                        </li>
+                                <?php }
+                                } ?>
+                                <li><a href="/dasbor/user/ubah" class="dropdown-item"><i class="fa fa-chevron-right nav-icon"></i> Ganti Password</a></li>
+                                </ul>
+                            </li>
+                            <li class="nav-item dropdown dropdown-hover">
+                                <a id="dropdownSubMenu2" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link dropdown-toggle">Manajemen Agen</a>
+                                <ul aria-labelledby="dropdownSubMenu2" class="dropdown-menu border-0 shadow">
+                                    <li><a href="/dasbor/agen" class="dropdown-item"><i class="fa fa-chevron-right nav-icon"></i> Daftar Agen</a></li>
+                                    <li><a href="/dasbor/agen/tambah" class="dropdown-item"><i class="fa fa-chevron-right nav-icon"></i> Tambah Agen</a></li>
+                                </ul>
+                            </li>
+                            <li class="nav-item">
+                                <a href="/dasbor/faq" class="nav-link">FAQ</a>
+                            </li>
                     </ul>
                 </div>
 

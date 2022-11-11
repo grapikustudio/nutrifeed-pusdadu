@@ -53,7 +53,7 @@ $routes->get('/dasbor/user/delete/(:num)', "App::deleteUser/$1", ['filter' => 'a
 $routes->get('/dasbor/link', "App::listLink", ['filter' => 'exceptAgen']);
 $routes->get('/dasbor/file', "App::listFile", ['filter' => 'exceptAgen']);
 $routes->get('/dasbor/faq', "App::faq", ['filter' => 'exceptAgen']);
-//$routes->get('/dasbor/file', "App::getFile", ['filter' => 'exceptAgen']);
+$routes->get('/dasbor/user/ubah', "App::ubahPass", ['filter' => 'exceptAgen']);
 $routes->get('/dasbor/file/upload', "App::upload", ['filter' => 'exceptAgen']);
 $routes->get('/dasbor/file/delete/(:any)', "App::deleteFile/$1", ['filter' => 'exceptAgen']);
 $routes->get('/dasbor/file/update/(:num)', "App::updateFile/$1", ['filter' => 'exceptAgen']);
@@ -72,6 +72,7 @@ $routes->post('/doUpdateLink', "App::doUpdateLink");
 $routes->post('/doUpdateFile', "App::doUpdateFile");
 $routes->post('/doUpdateUser', "App::doUpdateUser");
 $routes->post('/doUpdateAgen', "App::doUpdateAgen");
+$routes->post('/doChgPass', 'App::doChgPass');
 $routes->post('/doUpload', "App::doUpload");
 $routes->post('/addDriveFolder', "App::addFolderDrive");
 $routes->post('/updateDrive', "App::updateDrive");
