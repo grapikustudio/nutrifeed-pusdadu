@@ -248,10 +248,17 @@ class App extends BaseController
     }
     public function listAgen()
     {
+        $user = session()->get('name');
+        if (session()->get('role') == 5) {
+            $getData = $this->agenModel->getData($user);
+        } else {
+            $getData = $this->agenModel->getData();
+        }
+
         $data = [
             'breadcrumb' => $this->breadcrumb->buildAuto(),
             'title' => 'Daftar Agen',
-            'users' => $this->agenModel->getData()
+            'users' => $getData
         ];
         return view('listAgen', $data);
     }

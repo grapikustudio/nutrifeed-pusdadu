@@ -29,9 +29,11 @@
                             <div>
                                 <h3 class="card-title mt-2">Daftar Agen yang Telah Registrasi</h3>
                             </div>
-                            <div style="float: right;">
-                                <a href="/dasbor/agen/tambah" class="btn btn-primary">Tambah Agen</a>
-                            </div>
+                            <?php if (session()->get('role') == 5 or session()->get('role') == 1 or session()->get('role') == 2) { ?>
+                                <div style="float: right;">
+                                    <a href="/dasbor/agen/tambah" class="btn btn-primary">Tambah Agen</a>
+                                </div>
+                            <?php } ?>
                         </div>
                         <!-- /.card-header -->
                         <div class="card-body">
@@ -47,8 +49,10 @@
                                         <th>Email</th>
                                         <th>Nama Agen</th>
                                         <th>Referer</th>
-                                        <th>Status</th>
-                                        <th>Aksi</th>
+                                        <?php if (session()->get('role') == 5 or session()->get('role') == 1 or session()->get('role') == 2) { ?>
+                                            <th>Status</th>
+                                            <th>Aksi</th>
+                                        <?php } ?>
                                     </tr>
 
                                 </thead>
@@ -67,12 +71,13 @@
                                             <td><?= $u['email']; ?> </td>
                                             <td><?= $u['name']; ?></td>
                                             <td><?= $u['referer']; ?> </td>
-                                            <td><?= $status; ?></td>
-
-                                            <td>
-                                                <a href="javascript:;" class="btn btn-danger" data-toggle="modal" data-target="#modal-default" data-button-type="agen" data-id="<?= $u['id']; ?>" data-id-user="<?= $u['id_user']; ?>"><i class="fas fa-trash"></i> Hapus</a>
-                                                <a href="/dasbor/agen/update/<?= $u['id']; ?>" class="btn btn-warning"><i class="fas fa-pen"></i> Update</a>
-                                            </td>
+                                            <?php if (session()->get('role') == 5 or session()->get('role') == 1 or session()->get('role') == 2) { ?>
+                                                <td><?= $status; ?></td>
+                                                <td>
+                                                    <a href="javascript:;" class="btn btn-danger" data-toggle="modal" data-target="#modal-default" data-button-type="agen" data-id="<?= $u['id']; ?>" data-id-user="<?= $u['id_user']; ?>"><i class="fas fa-trash"></i> Hapus</a>
+                                                    <a href="/dasbor/agen/update/<?= $u['id']; ?>" class="btn btn-warning"><i class="fas fa-pen"></i> Update</a>
+                                                </td>
+                                            <?php } ?>
                                         </tr>
                                     <?php } ?>
                                 </tbody>

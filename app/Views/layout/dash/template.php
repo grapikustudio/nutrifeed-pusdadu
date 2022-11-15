@@ -111,7 +111,9 @@
                             <a id="dropdownSubMenu2" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link dropdown-toggle">Manajemen Agen</a>
                             <ul aria-labelledby="dropdownSubMenu2" class="dropdown-menu border-0 shadow">
                                 <li><a href="/dasbor/agen" class="dropdown-item"><i class="fa fa-chevron-right nav-icon"></i> Daftar Agen</a></li>
-                                <li><a href="/dasbor/agen/tambah" class="dropdown-item"><i class="fa fa-chevron-right nav-icon"></i> Tambah Agen</a></li>
+                                <?php if (session()->get('role') == 5 or session()->get('role') == 1 or session()->get('role') == 2) { ?>
+                                    <li><a href="/dasbor/agen/tambah" class="dropdown-item"><i class="fa fa-chevron-right nav-icon"></i> Tambah Agen</a></li>
+                                <?php } ?>
                             </ul>
                         </li>
                         <li class="nav-item">

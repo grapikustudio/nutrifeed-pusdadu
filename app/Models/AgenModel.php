@@ -34,11 +34,14 @@ class AgenModel extends Model
             'created_at' => $this->setDate()
         ]);
     }
-    public function getData()
+    public function getData($user)
     {
         $builder = $this->table("agen");
         $builder->select('*, agen.id as id');
         $builder->join('user', 'agen.id_user = user.id');
+        if (isset($user)) {
+            $builder->where('referer', $user);
+        }
         $data = $builder->get()->getResultArray();
         return $data;
     }
