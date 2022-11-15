@@ -90,9 +90,11 @@
                             <li class="nav-item">
                                 <a href="/dasbor" class="nav-link">Dasbor</a>
                             </li>
-                            <li class="nav-item">
-                                <a href="/dasbor/log" class="nav-link">Log</a>
-                            </li>
+                            <?php if (session()->get('role') == 1 or session()->get('role') == 2) { ?>
+                                <li class="nav-item">
+                                    <a href="/dasbor/log" class="nav-link">Log</a>
+                                </li>
+                            <?php } ?>
                             <li class="nav-item">
                                 <a href="/dasbor/file" class="nav-link">File Manager</a>
                             </li>

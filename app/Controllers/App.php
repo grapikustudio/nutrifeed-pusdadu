@@ -248,11 +248,13 @@ class App extends BaseController
     }
     public function listAgen()
     {
-        $user = session()->get('name');
+
         if (session()->get('role') == 5) {
+            $user = session()->get('name');
             $getData = $this->agenModel->getData($user);
         } else {
-            $getData = $this->agenModel->getData();
+            $user = null;
+            $getData = $this->agenModel->getData($user);
         }
 
         $data = [
@@ -611,8 +613,8 @@ class App extends BaseController
         $data = [
             'breadcrumb' => $this->breadcrumb->buildAuto(),
             'title' => 'Log Aktivitas',
-            'auth' => $this->logModel->where('category', 'otorisasi')->findAll(),
-            'event' => $this->logModel->where('category', 'event')->findAll()
+            'auth' => $this->logModel->where('category', 'otorisasi')->orderBy('id', 'DESC')->findAll(),
+            'event' => $this->logModel->where('category', 'event')->orderBy('id', 'DESC')->findAll()
         ];
         return view('log', $data);
     }
