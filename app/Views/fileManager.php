@@ -110,22 +110,27 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form action="/doUpload" method="post" enctype="multipart/form-data">
+            <form id="upload_form" enctype="multipart/form-data">
                 <div class="modal-body">
                     <div class="form-group">
                         <input type="hidden" id="id" name="id">
                         <label for="fileUpload">Pilih File</label>
                         <div class="input-group">
                             <div class="custom-file">
-                                <input type="file" class="custom-file-input" id="fileUpload" name="file[]" multiple>
-                                <label class="custom-file-label" for="fileUpload">Klik Untuk Pilih File ...</label>
+                                <input type="file" class="custom-file-input" id="file" name="file[]" multiple>
+                                <label class="custom-file-label" for="file">Klik Untuk Pilih File ...</label>
                             </div>
                         </div>
+                    </div>
+                    <div class="form-group">
+                        <progress id="progressBar" value="0" max="100" style="width:100%; display: none;"></progress>
+                        <h3 id="status"></h3>
+                        <p id="loaded_n_total"></p>
                     </div>
                 </div>
                 <div class="modal-footer justify-content-between">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Batalkan</button>
-                    <button type="submit" class="btn btn-primary">Tambah</a>
+                    <button type="button" id="upload" class="btn btn-primary">Upload</a>
                 </div>
             </form>
         </div>

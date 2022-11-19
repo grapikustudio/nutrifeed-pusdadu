@@ -14,7 +14,8 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/rowreorder/1.2.8/css/rowReorder.dataTables.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.3.0/css/responsive.dataTables.min.css">
-
+    <!-- jQuery -->
+    <script src="/plugins/jquery/jquery.min.js"></script>
     <style>
         #example1_filter {
             float: right;
@@ -268,8 +269,7 @@
 
     <!-- REQUIRED SCRIPTS -->
 
-    <!-- jQuery -->
-    <script src="/plugins/jquery/jquery.min.js"></script>
+
     <!-- Bootstrap 4 -->
     <script src="/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
     <!-- Grapiku App -->
@@ -317,6 +317,57 @@
         $(function() {
             bsCustomFileInput.init();
         });
+    </script>
+    <script>
+        function ambilId(file) {
+            return document.getElementById(file);
+        }
+
+        $(document).ready(function() {
+            $("#upload").click(function() {
+                ambilId("progressBar").style.display = "block";
+                var total = ambilId("file").files.length;
+                var id = $('#id').val();
+                if (file != "") {
+                    var formdata = new FormData();
+                    formdata.append("id", id);
+                    for (var index = 0; index < total; index++) {
+                        var file = ambilId("file").files[index];
+                        formdata.append("file[]", file);
+                        var ajax = new XMLHttpRequest();
+                        ajax.upload.addEventListener("progress", progressHandler, false);
+                        ajax.addEventListener("load", completeHandler, false);
+                        ajax.addEventListener("error", errorHandler, false);
+                        ajax.addEventListener("abort", abortHandler, false);
+                        ajax.open("POST", "/doUpload");
+                        ajax.send(formdata);
+                    }
+
+                }
+            });
+        });
+
+        function progressHandler(event) {
+            ambilId("loaded_n_total").innerHTML = "Telah diupload " + event.loaded + " bytes dari " + event.total;
+            var percent = (event.loaded / event.total) * 100;
+            ambilId("progressBar").value = Math.round(percent);
+            ambilId("status").innerHTML = Math.round(percent) + "% sedang diupload... Mohon Tunggu";
+        }
+
+        function completeHandler(event) {
+            ambilId("status").innerHTML = event.target.responseText;
+            ambilId("progressBar").value = 0;
+            $('#modal-upload').modal('hide');
+            location.reload();
+        }
+
+        function errorHandler(event) {
+            ambilId("status").innerHTML = "Upload Gagal";
+        }
+
+        function abortHandler(event) {
+            ambilId("status").innerHTML = "Upload Dibatalkan";
+        }
     </script>
 </body>
 

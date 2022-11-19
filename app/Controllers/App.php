@@ -351,7 +351,7 @@ class App extends BaseController
             $fileMetadata = new Drive\DriveFile(array(
                 'name' => $data['folder'],
                 'mimeType' => 'application/vnd.google-apps.folder'
-                
+
             ));
             $fileMetadata->setParents([$data['id']]);
             $file = $driveService->files->create($fileMetadata, array(
@@ -559,7 +559,6 @@ class App extends BaseController
     {
         $file = $this->request->getFiles('file');
         $folder = $this->request->getVar();
-
         try {
             $client = new Client();
             $client->setAuthConfig(WRITEPATH . '/secrets/drivenutrifeed-dcc00319371b.json');
@@ -591,7 +590,7 @@ class App extends BaseController
             $logMsg = 'User ' . session()->get('name') . ' Upload File';
             $this->log->doLog($this->logType, $logMsg);
             session()->setFlashdata('successUpload', 'File Berhasil di Upload');
-            return redirect()->to(previous_url());
+            //return redirect()->to(previous_url());
         } catch (\Exception $e) {
             $err = json_decode($e->getMessage());
             session()->setFlashdata('sessionUpload', "An error occurred: " . $e);
