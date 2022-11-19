@@ -13,6 +13,7 @@ use App\Models\LogModel;
 use \Geeklabs\Breadcrumbs\Breadcrumb;
 use Google\Client;
 use Google\Service\Drive;
+use Google\Service\Drive\Permission;
 
 use function PHPUnit\Framework\isEmpty;
 use function PHPUnit\Framework\returnSelf;
@@ -173,11 +174,17 @@ class App extends BaseController
                     'supportsAllDrives' => true,
                     'fields' => '*'
                 ));
+                if ($qFolder) {
+                    $folderName = $driveService->files->get($qFolder);
+                } else {
+                    $folderName = $driveService->files->get('1CXYDZC65wUSlrE5wGr87tOu4vm6-2Kwi');
+                }
                 $data = [
                     'title' => "File Manager",
                     'breadcrumb' => $this->breadcrumb->buildAuto(),
                     'file' => $response->files,
-                    'folder' => $qFolder
+                    'folder' => $qFolder,
+                    'folderName' => $folderName
                 ];
                 return view('fileManager', $data);
                 $pageToken = $response->pageToken;
@@ -344,12 +351,15 @@ class App extends BaseController
             $fileMetadata = new Drive\DriveFile(array(
                 'name' => $data['folder'],
                 'mimeType' => 'application/vnd.google-apps.folder'
+                
             ));
             $fileMetadata->setParents([$data['id']]);
             $file = $driveService->files->create($fileMetadata, array(
                 'fields' => '*'
             ));
-            if ($data['desc']) {
+            $permission = new Permission(array('type' => 'anyone', 'role' => 'reader'));
+            $driveService->permissions->create($file->id, $permission, ['fields' => 'id']);
+            if (isset($data['desc'])) {
                 $this->folderModel->save([
                     'id_folder' => $file->id,
                     'link' => $file->webViewLink,
@@ -573,7 +583,7 @@ class App extends BaseController
                     $file = $driveService->files->create($fileMetadata, array(
                         'data' => $fileContent,
                         'mimeType' => $mimeType,
-                        'uploadType' => 'multipart',
+                        'uploadType' => 'resumable',
                         'fields' => 'id'
                     ));
                 }

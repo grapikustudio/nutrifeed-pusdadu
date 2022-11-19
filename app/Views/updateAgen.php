@@ -34,7 +34,7 @@
                                         <input type="text" class="form-control" id="referal" name="referal" disabled value="<?= $link['referer']; ?>">
                                     </div>
                                     <div class="form-group">
-                                        <label for="email">Email</label>
+                                        <label for="email">Username</label>
                                         <input type="email" class="form-control" id="email" name="email" disabled value="<?= $link['email']; ?>">
                                     </div>
                                     <div class="form-group">

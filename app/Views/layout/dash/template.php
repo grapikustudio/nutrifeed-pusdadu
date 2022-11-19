@@ -291,17 +291,17 @@
     <script src="/plugins/dropzone/min/dropzone.min.js"></script>
     <script>
         $("#example1").DataTable({
-            rowReorder: {
-                selector: 'td:nth-child(2)'
-            },
+            // rowReorder: {
+            //     selector: 'td:nth-child(2)'
+            // },
             "responsive": true,
             "lengthChange": false,
             "autoWidth": false,
         });
         $("#example2").DataTable({
-            rowReorder: {
-                selector: 'td:nth-child(2)'
-            },
+            // rowReorder: {
+            //     selector: 'td:nth-child(2)'
+            // },
             "responsive": true,
             "lengthChange": false,
             "autoWidth": false,

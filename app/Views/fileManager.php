@@ -24,7 +24,7 @@
                     <div class="card">
                         <div class="card-header">
                             <div>
-                                <h3 class="card-title mt-2">Lokasi : <a href="/dasbor/file">File</a> /</h3>
+                                <h3 class="card-title mt-2">Lokasi : <a href="/dasbor/file">File</a> / <?= $folderName->name; ?></h3>
                             </div>
                             <div style="float: right;">
                                 <?php if ($folder) { ?>

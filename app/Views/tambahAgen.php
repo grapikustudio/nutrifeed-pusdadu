@@ -29,8 +29,8 @@
                         <form action="/doAddAgen" method="post">
                             <div class="card-body">
                                 <div class="form-group">
-                                    <label for="email">Email</label>
-                                    <input type="email" class="form-control" id="email" name="email" required placeholder="Masukkan Alamat Email Agen">
+                                    <label for="email">Username</label>
+                                    <input type="text" class="form-control" id="email" name="email" required placeholder="Masukkan Email / Username Agen">
                                 </div>
                                 <div class="form-group">
                                     <label for="name">Nama Agen</label>

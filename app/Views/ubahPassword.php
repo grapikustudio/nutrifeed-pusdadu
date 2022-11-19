@@ -39,7 +39,7 @@
                                     <input type="email" class="form-control" id="email" name="email" required value="<?= session()->get('email'); ?>" disabled>
                                 </div>
                                 <div class="form-group">
-                                    <label for="name">Nama Agen</label>
+                                    <label for="name">Nama Pengguna</label>
                                     <input type="text" class="form-control" id="name" name="name" required value="<?= session()->get('name'); ?>" disabled>
                                 </div>
                                 <div class="form-group">

@@ -46,7 +46,7 @@
                                 <thead>
                                     <tr>
                                         <th>No</th>
-                                        <th>Email</th>
+                                        <th>Username</th>
                                         <th>Nama Agen</th>
                                         <th>Referer</th>
                                         <?php if (session()->get('role') == 5 or session()->get('role') == 1 or session()->get('role') == 2) { ?>
