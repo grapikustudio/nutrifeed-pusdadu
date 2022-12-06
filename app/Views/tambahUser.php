@@ -24,6 +24,13 @@
         <div class="container">
             <div class="row">
                 <div class="col">
+                    <?php if (session()->getFlashdata('user_found')) {
+                    ?>
+                        <div class="alert alert-danger" role="alert">
+                            <?= session()->getFlashdata('user_found'); ?>
+                        </div>
+                    <?php }
+                    ?>
                     <div class="card card-primary">
                         <!-- form start -->
                         <form action="/doAddUser" method="post">

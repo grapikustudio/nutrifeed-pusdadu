@@ -301,6 +301,11 @@ class App extends BaseController
     public function doAddUser()
     {
         $data = $this->request->getVar();
+        $query = $this->authModel->where('email', $data['email'])->first();
+        if ($query) {
+            session()->setFlashdata('user_found', 'Email Sudah Terdaftar');
+            return redirect()->to('/dasbor/user/tambah');
+        }
         $salt = uniqid('', true);
         $password = md5($data['pass']) . $salt;
         $this->authModel->save([
